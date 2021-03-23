@@ -1,0 +1,42 @@
+Plusieurs modèles en cours de conception.
+
+1. Modèle USB pur.
+Conçu pour être relativement compact. Sans alimentation, sans wifi, sans cadran (hormis 3 leds rouge/orange/vert).
+
+Le code est du code arduino C, tournant sur arduino Nano.
+
+Le code présent ici est le code client (côté PC) 
+pour afficher la concentration de CO2 et régler les seuils 
+seuils d'allumage des leds. 
+< seuil1 (600ppm par défaut)  = vert
+< seuil2 (800ppm par défaut) = orange
+< seuil3 (1000ppm par défaut) = rouge
+> seuil3 = rouge clignotant
+
+2. Modèle analogique. 
+Sans microcontrôleur ni rien. 
+Mais une batterie (grosse pile 6V + régulateur 5V)
+et un galvanomètre.
+
+Pas de code
+
+
+3. Modèle wifi.
+ESP8266
+Batterie 3.7V
+Boost 5V
+Chargeur USB / configurateur (point d'accès)
+code edge en python
+code client cloud en html/js
+code client local (pour config) en python
+
+4. Modèle wifi.
+ESP32+oled
+Batterie 3.7V
+Boost 5V
+Chargeur USB / configurateur (point d'accès)
+code edge en python
+code client cloud en html/js
+code client local (pour config) en python
+
+5. Combinaisons : les modèles 1, 3 et 4 peuvent s'utiliser tous avec ou sans écran, avec ou sans galvanomètre, avec ou sans led
