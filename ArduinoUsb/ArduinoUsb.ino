@@ -1,4 +1,3 @@
-#include <SoftwareSerial.h>
 #include <EEPROM.h>
 
 const int rouge=2;
@@ -89,14 +88,52 @@ void loop() {
   digitalWrite(vert, LOW);
   digitalWrite(LED_BUILTIN, LOW);
   int prr=pr/500;
-  if(prr<seuils.s1) digitalWrite(vert, HIGH);
+  if(prr<300){
+    digitalWrite(vert, HIGH);
+    digitalWrite(orange, HIGH);
+    digitalWrite(rouge, HIGH);
+  }
+  else if(prr<seuils.s1) digitalWrite(vert, HIGH);
   else if(prr<seuils.s2) digitalWrite(orange, HIGH);
   else digitalWrite(rouge, HIGH);
   if(prr>seuils.s3) digitalWrite(LED_BUILTIN, HIGH);
-  for(int i=0; i<10;i++){
-    delay(250);
-    if(prr>seuils.s3) digitalWrite(rouge, LOW);
-    delay(250);
-    if(prr>seuils.s3) digitalWrite(rouge, HIGH);
+  int perio=16;
+  if(prr>seuils.s3+800) perio=1;
+  else if(prr>seuils.s3+600) perio=2;
+  else if(prr>seuils.s3+400) perio=4;
+  else if(prr>seuils.s3+200) perio=8;
+  int j=0;
+  int l=1;
+  for(int i=0; i<50;i++){
+    j++;
+    delay(100);
+    if(prr>seuils.s3 && j>=perio){
+        l=1-l;
+        j=0;
+        if(l){
+            digitalWrite(rouge, HIGH);
+            if(perio==8) digitalWrite(vert, HIGH);
+            else if(perio==4) digitalWrite(vert, LOW);
+            else if(perio==2) digitalWrite(orange, HIGH);
+            else if(perio==1){
+                digitalWrite(orange, HIGH);
+                digitalWrite(vert, HIGH);
+            }
+        }else{
+            digitalWrite(rouge, LOW);
+            if(perio==8) digitalWrite(vert, LOW);
+            else if(perio==4) digitalWrite(vert, HIGH);
+            else if(perio==2) digitalWrite(orange, LOW);
+            else if(perio==1){
+                digitalWrite(orange, LOW);
+                digitalWrite(vert, LOW);
+            }
+        }
+    }
+  }
+  if(prr>seuils.s3){
+    digitalWrite(vert, LOW);
+    digitalWrite(orange, LOW);
+    digitalWrite(rouge, LOW);
   }
 }
